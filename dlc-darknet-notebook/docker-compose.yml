@@ -1,7 +1,0 @@
-version: '3'
-services:
-  ngrok:
-    tty: true
-    build: 
-      context: ./ngrok
-      dockerfile: Dockerfile

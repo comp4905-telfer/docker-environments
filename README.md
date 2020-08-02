@@ -10,4 +10,19 @@ Note that docker only supports GPU access for Linux distrobutions
 ## General Notes
 
 ### Useful Docker Compose Commands
-docker-compose exec <service-name> sh
+
+Launch docker-compose 
+```
+docker-compose up -d
+```
+
+Get the status of docker-compose services
+```
+docker-compose ps
+```
+
+Enter the shell of a docker-compose service
+```
+docker-compose exec <service-name> bash
+```
+

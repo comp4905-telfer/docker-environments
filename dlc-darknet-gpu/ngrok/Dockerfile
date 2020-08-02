@@ -11,3 +11,5 @@ RUN unzip ngrok.zip
 
 # Simple python script to replace environment variables in config file, environement variables must have the form "{ENV_VAR}" (from python formatting)
 RUN echo "import os; import sys; fp = open(sys.argv[1], 'r'); s = fp.read().format(**os.environ); fp.close(); fp = open(sys.argv[2], 'w'); fp.write(s);" > replace-env.py
+COPY run.sh .
+ENTRYPOINT ["/bin/bash", "-c"]

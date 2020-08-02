@@ -132,5 +132,6 @@ RUN apt-get install -y libglib2.0-0
 # https://github.com/opencv/opencv/issues/12625
 RUN rm /root/miniconda/envs/darknet/bin/../lib/libfontconfig.so.1
 
-SHELL ["bash", "-c"]
-ENTRYPOINT /bin/bash
+COPY run.sh .
+SHELL ["/bin/bash", "-c"]
+ENTRYPOINT ["/bin/bash", "-c"]

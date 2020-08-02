@@ -2,17 +2,18 @@ version: '3'
 services:
   ngrok:
     tty: true
+    stdin_open: true
     build: ./ngrok
-    command: bash -c "python3 replace-env.py ngrok-config.yml.template ngrok-config.yml && ./ngrok start jupyter -config=ngrok-config.yml"
+    command: ./run.sh
     env_file:
       - .env
     networks:
       - jupyter
-    restart: on-failure
   jupyter:
     tty: true
+    stdin_open: true
     build: dlc-darknet-gpu
-    command: bash -c "jupyter lab --ip 0.0.0.0 --port 8888 --no-browser --allow-root --NotebookApp.token='$NOTEBOOK_PASSWORD' --NotebookApp.allow_origin=* --NotebookApp.notebook_dir=/"
+    command: ./run.sh 
     ports:
       - 8888:8888
     env_file:
