@@ -133,5 +133,7 @@ RUN apt-get install -y libglib2.0-0
 RUN rm /root/miniconda/envs/darknet/bin/../lib/libfontconfig.so.1
 
 COPY run.sh .
+
+RUN chsh -s /bin/bash
 SHELL ["/bin/bash", "-c"]
 ENTRYPOINT ["/bin/bash", "-c"]
