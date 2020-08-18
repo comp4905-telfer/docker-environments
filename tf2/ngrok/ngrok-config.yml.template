@@ -1,0 +1,7 @@
+authtoken: {NGROK_AUTH_TOKEN}
+tunnels:
+    jupyter:
+        proto: http
+        addr: jupyter:8888
+        subdomain: {NGROK_NOTEBOOK_DOMAIN}
+

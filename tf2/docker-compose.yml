@@ -1,0 +1,27 @@
+version: '2.3'
+services:
+  ngrok:
+    tty: true
+    stdin_open: true
+    build: ./ngrok
+    command: ./run.sh
+    env_file:
+      - .env
+    networks:
+      - jupyter
+  jupyter:
+    tty: true
+    stdin_open: true
+    runtime: nvidia
+    build: dlc-darknet-gpu
+    command: ./run.sh 
+    ports:
+      - 8888:8888
+    env_file:
+      - .env
+    networks:
+      - jupyter
+    volumes:
+      - /repos:/repos
+networks:
+  jupyter:
