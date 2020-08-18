@@ -10,8 +10,6 @@ ARG CUDA_ARCH_BIN=7.5
 ARG OPENCV_VERSION=3.4.10 
 ARG OPENCV_INSTALL_PATH=/opencv_install
 
-ENTRYPOINT /bin/bash
-
 # Install dependencies
 RUN apt-get update 
 RUN apt-get install -y build-essential cmake unzip pkg-config wget \
@@ -35,7 +33,6 @@ WORKDIR /opencv/build
 
 # Options aren't well documented, so looking at the CMakeLists.txt is the best method
 # OpenCV 3.4 => https://github.com/opencv/opencv/blob/3.4/CMakeLists.txt
-RUN echo 'test'
 RUN cmake -D CMAKE_BUILD_TYPE=RELEASE \
 	-D CMAKE_INSTALL_PREFIX=${OPENCV_INSTALL_PATH} \
 	-D INSTALL_PYTHON_EXAMPLES=ON \
@@ -78,9 +75,8 @@ RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y git wget libgtk2.0-dev libxxf86vm1 ffmpeg
 
-WORKDIR /temp
-
 # Install Anaconda
+WORKDIR /temp
 RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O ~/miniconda.sh
 RUN bash ~/miniconda.sh -b -p $HOME/miniconda
 RUN sed -e 's|PATH="\(.*\)"|PATH="/root/miniconda/bin:\1"|g' -i /etc/environment
@@ -111,14 +107,13 @@ RUN apt-get update -y && apt-get install -y google-cloud-sdk
 RUN apt-get install -y google-cloud-sdk-app-engine-python
 
 # Darknet 
-RUN conda install -c conda-forge jupyterlab
 RUN conda create -n darknet python=3.6 numpy
 SHELL ["conda", "run", "-n", "darknet", "/bin/bash", "-c"]
 RUN conda install -y ipykernel 
 RUN python -m ipykernel install --user --name darknet --display-name "darknet"
 RUN conda install -y matplotlib cython
 # RUN conda uninstall -y fontconfig
-RUN cp /opencv_install/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so  /root/miniconda/envs/darknet/lib/python3.6/site-packages/cv2.so
+RUN cp ${OPENCV_INSTALL_PATH}/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so  /root/miniconda/envs/darknet/lib/python3.6/site-packages/cv2.so
 
 RUN sed -i 's:./libdarknet.so:/darknet/libdarknet.so:g' /darknet/darknet.py
 RUN cp /darknet/darknet.py /root/miniconda/envs/darknet/lib/python3.6/site-packages
@@ -132,8 +127,15 @@ RUN apt-get install -y libglib2.0-0
 # https://github.com/opencv/opencv/issues/12625
 RUN rm /root/miniconda/envs/darknet/bin/../lib/libfontconfig.so.1
 
-COPY run.sh .
+# Insteall a TF1 Environment
+RUN conda create -n py36-tf1 python=3.6 numpy cython
+RUN conda run -n py36-tf1 pip install tensorflow-gpu==1.13 pandas matplotlib scikit-image scikit-learn dataclasses tables
+RUN cp ${OPENCV_INSTALL_PATH}/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /root/miniconda/envs/py36-tf1/lib/python3.6/site-packages/cv2.so
+SHELL ["conda", "run", "-n", "py36-tf1", "/bin/bash", "-c"]
+RUN conda install -y ipykernel 
+RUN python -m ipykernel install --user --name "py36-tf1" --display-name "py36-tf1"
 
-RUN chsh -s /bin/bash
 SHELL ["/bin/bash", "-c"]
+COPY run.sh .
+RUN chsh -s /bin/bash
 ENTRYPOINT ["/bin/bash", "-c"]
