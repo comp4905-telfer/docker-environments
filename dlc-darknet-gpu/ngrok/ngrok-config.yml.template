@@ -4,7 +4,3 @@ tunnels:
         proto: http
         addr: jupyter:8888
         subdomain: {NGROK_NOTEBOOK_DOMAIN}
-    tf2:
-        proto: http
-        addr: jupyter:8889
-        subdomain: {NGROK_NOTEBOOK_DOMAIN}-tf2
