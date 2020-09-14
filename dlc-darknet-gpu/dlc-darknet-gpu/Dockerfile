@@ -129,7 +129,7 @@ RUN rm /root/miniconda/envs/darknet/bin/../lib/libfontconfig.so.1
 
 # Insteall a TF1 Environment
 RUN conda create -n py36-tf1 python=3.6 numpy cython
-RUN conda run -n py36-tf1 pip install tensorflow-gpu==1.13 pandas matplotlib scikit-image scikit-learn dataclasses tables
+RUN conda run -n py36-tf1 pip install tensorflow-gpu==1.13.2 pandas matplotlib scikit-image scikit-learn dataclasses tables
 RUN cp ${OPENCV_INSTALL_PATH}/lib/python3.6/dist-packages/cv2/python-3.6/cv2.cpython-36m-x86_64-linux-gnu.so /root/miniconda/envs/py36-tf1/lib/python3.6/site-packages/cv2.so
 SHELL ["conda", "run", "-n", "py36-tf1", "/bin/bash", "-c"]
 RUN conda install -y ipykernel 
