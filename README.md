@@ -1,7 +1,7 @@
 # Docker Environments
 
 ## Setup 
-Note that docker only supports GPU access for Linux distrobutions
+Note that docker only supports GPU access for Linux distributions
 1. Install Docker
    https://docs.docker.com/engine/install/
 2. Install Docker Compose 
