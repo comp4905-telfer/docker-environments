@@ -1,0 +1,46 @@
+version: '2.3'
+services:
+  ngrok:
+    tty: true
+    stdin_open: true
+    build: ./ngrok
+    command: ./run.sh
+    env_file:
+      - .env
+    networks:
+      - tf1-dlc-darknet
+      - tf2
+
+  tf1-dlc-darknet:
+    tty: true
+    stdin_open: true
+    runtime: nvidia
+    build: tf1-dlc-darknet
+    command: ./run.sh 
+    ports:
+      - 8888:8888
+    env_file: 
+      - .env
+    networks:
+      - tf1-dlc-darknet
+    volumes:
+      - /shared:/shared
+
+  tf2:
+    tty: true
+    stdin_open: true
+    runtime: nvidia
+    build: tf2
+    command: ./run.sh 
+    ports:
+      - 8889:8888
+    env_file:
+      - .env
+    networks:
+      - tf2
+    volumes:
+      - /shared:/shared
+
+networks:
+  tf1-dlc-darknet:
+  tf2:

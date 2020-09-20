@@ -1,0 +1,12 @@
+authtoken: {NGROK_AUTH_TOKEN}
+tunnels:
+    tf1-dlc-darknet:
+        proto: http
+        addr: tf1-dlc-darknet:8888
+        subdomain: {NGROK_NOTEBOOK_DOMAIN}
+        remote_addr: 8888
+    tf2:
+        proto: http
+        addr: tf2:8888
+        subdomain: {NGROK_NOTEBOOK_DOMAIN}
+        remote_addr:8889
