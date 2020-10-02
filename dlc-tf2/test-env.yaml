@@ -1,0 +1,12 @@
+name: DLC-GPU-TF2
+dependencies:
+  - python=3.7
+  - pip
+  - tensorflow-gpu==2.2.0
+  - cudnn=7
+  - wxpython<4.1.0
+  - jupyter
+  - nb_conda
+  - Shapely
+  - pip:
+    - tf_slim
