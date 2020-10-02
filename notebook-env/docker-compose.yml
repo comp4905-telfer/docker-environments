@@ -25,6 +25,8 @@ services:
       - tf1-dlc-darknet
     volumes:
       - /shared:/shared
+    environment:
+      - NOTEBOOK_TITLE_POSTFIX=DLC
 
   tf2:
     tty: true
@@ -40,6 +42,8 @@ services:
       - tf2
     volumes:
       - /shared:/shared
+    environment:
+      - NOTEBOOK_TITLE_POSTFIX=TF2
 
 networks:
   tf1-dlc-darknet:
