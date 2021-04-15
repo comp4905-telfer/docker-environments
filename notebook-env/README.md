@@ -1,8 +1,6 @@
 # Requirements
-
-
-nvidia-container-runtime (you must follow the steps to configure the docker/daemon.json):    
-https://github.com/NVIDIA/nvidia-container-runtime#installation
+- nvidia container toolkit: 
+  https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#setting-up-nvidia-container-toolkit
 
 # Instructions
 First, look at the Dockerfile and confirm the ARGs are correct for your setup. Specifically, find your GPU and set the `CUDA_ARCH_BIN` using the compute capability field listed for it from https://developer.nvidia.com/cuda-gpus#compute

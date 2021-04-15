@@ -14,7 +14,6 @@ services:
   tf1-dlc-darknet:
     tty: true
     stdin_open: true
-    runtime: nvidia
     build: tf1-dlc-darknet
     command: ./run.sh 
     ports:
@@ -24,14 +23,18 @@ services:
     networks:
       - tf1-dlc-darknet
     volumes:
-      - /shared:/shared
+      - ${SHARED_VOLUME}:/shared
     environment:
       - NOTEBOOK_TITLE_POSTFIX=DLC
-
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: [gpu]
+        
   tf2:
     tty: true
     stdin_open: true
-    runtime: nvidia
     build: tf2
     command: ./run.sh 
     ports:
@@ -41,10 +44,37 @@ services:
     networks:
       - tf2
     volumes:
-      - /shared:/shared
+      - ${SHARED_VOLUME}:/shared
     environment:
       - NOTEBOOK_TITLE_POSTFIX=TF2
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: [gpu]
 
+  py39:
+    tty: true
+    stdin_open: true
+    build: py39
+    command: ./run.sh 
+    ports:
+      - 8890:8888
+    env_file:
+      - .env
+    networks:
+      - py39
+    volumes:
+      - ${SHARED_VOLUME}:/shared
+    environment:
+      - NOTEBOOK_TITLE_POSTFIX=py39
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: [gpu]
+    
 networks:
   tf1-dlc-darknet:
   tf2:
+  py39:
