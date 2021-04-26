@@ -1,4 +1,4 @@
-version: '2.3'
+version: '3.8'
 services:
   ngrok:
     tty: true
@@ -16,6 +16,7 @@ services:
     stdin_open: true
     build: tf1-dlc-darknet
     command: ./run.sh 
+    shm_size: ${SHARED_MEMORY_SIZE}
     ports:
       - 8888:8888
     env_file: 
@@ -37,6 +38,7 @@ services:
     stdin_open: true
     build: tf2
     command: ./run.sh 
+    shm_size: ${SHARED_MEMORY_SIZE}
     ports:
       - 8889:8888
     env_file:
@@ -56,18 +58,22 @@ services:
   py39:
     tty: true
     stdin_open: true
-    build: py39
+    shm_size: ${SHARED_MEMORY_SIZE}
+    build: 
+      context: ./py39
+      args: 
+        NOTEBOOK_TITLE_PREFIX: ${NOTEBOOK_TITLE_PREFIX}
+        NOTEBOOK_TITLE_POSTFIX: py39
     command: ./run.sh 
     ports:
       - 8890:8888
+      - 8090:8090 
     env_file:
       - .env
     networks:
       - py39
     volumes:
       - ${SHARED_VOLUME}:/shared
-    environment:
-      - NOTEBOOK_TITLE_POSTFIX=py39
     deploy:
       resources:
         reservations:
