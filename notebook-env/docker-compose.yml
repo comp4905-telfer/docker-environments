@@ -40,7 +40,7 @@ services:
     command: ./run.sh 
     shm_size: ${SHARED_MEMORY_SIZE}
     ports:
-      - 8889:8888
+      - 8888:8888
     env_file:
       - .env
     networks:
@@ -66,8 +66,7 @@ services:
         NOTEBOOK_TITLE_POSTFIX: py39
     command: ./run.sh 
     ports:
-      - 8890:8888
-      - 8090:8090 
+      - 8888:8888
     env_file:
       - .env
     networks:
@@ -80,7 +79,36 @@ services:
           devices:
           - capabilities: [gpu]
     
+  dlclive:
+    tty: true
+    stdin_open: true
+    build: dlclive
+    command: ./run.sh 
+    shm_size: ${SHARED_MEMORY_SIZE}
+    build: 
+      context: ./dlclive
+      args: 
+        NOTEBOOK_TITLE_PREFIX: ${NOTEBOOK_TITLE_PREFIX}
+        NOTEBOOK_TITLE_POSTFIX: dlclive
+        
+    ports:
+      - 8888:8888
+    env_file:
+      - .env
+    networks:
+      - dlclive
+    volumes:
+      - ${SHARED_VOLUME}:/shared
+    environment:
+      - NOTEBOOK_TITLE_POSTFIX=DLC
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: [gpu]
+
 networks:
   tf1-dlc-darknet:
   tf2:
   py39:
+  dlclive:
