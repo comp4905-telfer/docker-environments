@@ -107,8 +107,39 @@ services:
           devices:
           - capabilities: [gpu]
 
+  dlc:
+    tty: true
+    stdin_open: true
+    build: dlc
+    command: ./run.sh 
+    shm_size: ${SHARED_MEMORY_SIZE}
+    build: 
+      context: ./dlc
+      args: 
+        NOTIFICATION_EMAIL: ${NOTIFICATION_EMAIL}
+        NOTIFICATION_PASSWORD: ${NOTIFICATION_PASSWORD}
+        NOTEBOOK_TITLE_PREFIX: ${NOTEBOOK_TITLE_PREFIX}
+        NOTEBOOK_TITLE_POSTFIX: dlc
+        
+    ports:
+      - 8888:8888
+    env_file:
+      - .env
+    networks:
+      - dlc
+    volumes:
+      - ${SHARED_VOLUME}:/shared
+    environment:
+      - NOTEBOOK_TITLE_POSTFIX=DLC
+    deploy:
+      resources:
+        reservations:
+          devices:
+          - capabilities: [gpu]
+
 networks:
   tf1-dlc-darknet:
   tf2:
   py39:
   dlclive:
+  dlc:
