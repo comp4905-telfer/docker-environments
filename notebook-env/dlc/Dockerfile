@@ -70,7 +70,7 @@ COPY run.sh .
 # My notification script
 RUN pip install --user pynotify-telfer
 ENV PATH $PATH:/root/.local/bin
-RUN notify sender update --email ${NOTIFICATION_EMAIL} --password ${NOTIFICATION_PASSWORD}}
+RUN notify sender update --email ${NOTIFICATION_EMAIL} --password ${NOTIFICATION_PASSWORD}
 
 RUN chsh -s /bin/bash
 SHELL ["/bin/bash", "-c"]
